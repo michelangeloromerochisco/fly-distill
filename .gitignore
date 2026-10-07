@@ -1,0 +1,22 @@
+# Scientific record only. Social/post material stays local by decision.
+LINKEDIN_POST.md
+LINKEDIN_GRAPHIC_RECEIPT.md
+linkedin_graphic.png
+make_linkedin_graphic.py
+
+# Regenerable or too large for the record
+ckpt_*.pt
+probs_*.npy
+probs_*.npy.meta.json
+tinystories_slice.txt
+Supplementary-Data-S1.zip
+larval_raw/
+results_1M_quick/
+__pycache__/
+*.log
+_phase*_*
+_*.py
+_*.png
+CLOUD_REPLICATION.md
+PAPER_DRAFT.md
+STATUS.md.bak
