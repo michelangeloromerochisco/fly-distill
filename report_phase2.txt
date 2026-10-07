@@ -1,0 +1,47 @@
+FLY-DISTILL PHASE 2 REPORT (max-scale capacity) - 20/09/2026 05:48:25
+==========================================================================
+Config: 150M train bytes (7.5x Phase 1), T=8, MLP readout w=1024,
+adapters-only (emb+gains+readout), same data/optimizer as Phase 1.
+Val region [150M,150.15M) differs from Phase 1 [20M,20.15M) - noted.
+
+== Phase 2 cells (150M, T=8, w=1024) ==
+  fly          n=2 mean=3.9546 sd=0.0277  [3.9741410417040206, 3.9350275665255827]
+  shuffled     n=2 mean=3.9871 sd=0.0247  [3.9696244132233023, 4.004600124972925]
+  er           n=2 mean=3.5385 sd=0.0409  [3.567468601193621, 3.5095852512676577]
+  fly-uniform  n=2 mean=4.0074 sd=0.0069  [4.012304005411715, 4.002513124687493]
+
+== Phase 1 references ==
+  (Phase 1 never ran T=8+w1024 combined at 20M; refs are T=4-linear,
+   T=8, and w1024 arms separately)
+
+== SCALE EFFECT ON THE TOPOLOGY GAP (the decision metric) ==
+  20M  T=4 linear              fly=4.2728 shuf=4.2442 gap=+0.0286
+  20M  T=8                     fly=4.0579 shuf=4.0543 gap=+0.0036
+  20M  w1024 (T=4)             fly=4.1841 shuf=4.1777 gap=+0.0063
+  150M T=8 w1024               fly=3.9546 shuf=3.9871 gap=-0.0325
+
+  gap at max scale vs gap at 20M baseline:
+    20M  T=4 linear              fly=4.2728 shuf=4.2442 gap=+0.0286
+    150M T=8 w1024               fly=3.9546 shuf=3.9871 gap=-0.0325
+
+== VERDICT ==
+SCALE FLIPS THE GAP: +0.0286 (20M) -> -0.0325 (150M). Fly topology wins at scale -> H1 for capacity-scale rescue.
+
+[09-15 21:59:49] === start p2:fly:s0 attempt 1
+[09-16 10:45:21] finished p2:fly:s0: RESULT p2_fly: val_bpb=3.9741 time=45922s steps=2343750
+[09-16 10:45:21] === start p2:shuffled:s0 attempt 1
+[09-16 23:34:48] finished p2:shuffled:s0: RESULT p2_shuffled: val_bpb=3.9696 time=46161s steps=2343750
+[09-16 23:34:48] === start p2:er:s0 attempt 1
+[09-17 12:27:50] finished p2:er:s0: RESULT p2_er: val_bpb=3.5675 time=46376s steps=2343750
+[09-17 12:27:50] === start p2:fly-uniform:s0 attempt 1
+[09-18 01:17:12] finished p2:fly-uniform:s0: RESULT p2_fly-uniform: val_bpb=4.0123 time=46157s steps=2343750
+[09-18 01:17:12] === start p2:fly:s1 attempt 1
+[09-18 14:03:48] finished p2:fly:s1: RESULT p2_fly: val_bpb=3.9350 time=45990s steps=2343750
+[09-18 14:03:48] === start p2:shuffled:s1 attempt 1
+[09-19 02:51:29] finished p2:shuffled:s1: RESULT p2_shuffled: val_bpb=4.0046 time=46056s steps=2343750
+[09-19 02:51:29] === start p2:er:s1 attempt 1
+[09-19 16:57:12] finished p2:er:s1: RESULT p2_er: val_bpb=3.5096 time=50737s steps=2343750
+[09-19 16:57:12] === start p2:fly-uniform:s1 attempt 1
+[09-20 05:48:00] finished p2:fly-uniform:s1: RESULT p2_fly-uniform: val_bpb=4.0025 time=46243s steps=2343750
+[09-20 05:48:00] no actionable jobs remain -> _phase2_all_done written
+[09-20 05:48:00] runner exit

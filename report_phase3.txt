@@ -1,0 +1,51 @@
+FLY-DISTILL PHASE 3 REPORT (n=4 + hubcap mechanism) - 26/09/2026 21:21:49
+==========================================================================
+Config: 150M bytes, T=8, w1024 (Phase 2 config). Seeds 0-1 from P2,
+seeds 2-3 + fly-hubcap (cap=40) from P3. Rules: RESEARCH.md §7 (pre-reg).
+
+== Cells (150M, T=8, w1024), seeds pooled ==
+  fly          n=4 mean=3.9572 sd=0.0303 s0:3.9741 s1:3.9350 s2:3.9911 s3:3.9284
+  shuffled     n=4 mean=3.9171 sd=0.0843 s0:3.9696 s1:4.0046 s2:3.8707 s3:3.8234
+  er           n=4 mean=3.5234 sd=0.0294 s0:3.5675 s1:3.5096 s2:3.5093 s3:3.5073
+  fly-uniform  n=4 mean=4.0049 sd=0.0050 s0:4.0123 s1:4.0025 s2:4.0024 s3:4.0022
+  fly-hubcap   n=2 mean=3.8381 sd=0.0538 s0:3.8001 s1:3.8761
+
+== PRIMARY ENDPOINT: per-seed fly - shuffled gaps (150M) ==
+  seed 0: +0.0045  shuffled wins
+  seed 1: -0.0696  fly wins
+  seed 2: +0.1204  shuffled wins
+  seed 3: +0.1049  shuffled wins
+  mean gap +0.0401 | 1/4 seeds with fly < shuffled
+
+== MECHANISM: fly-hubcap (cap=40) vs fly (150M, paired by seed) ==
+  seed 0: hubcap 3.8001 vs fly 3.9741  (hubcap - fly = -0.1741)
+  seed 1: hubcap 3.8761 vs fly 3.9350  (hubcap - fly = -0.0589)
+  hubcap-fly mean diff: -0.1165 | hubcap-shuffled mean diff: -0.1490
+
+== VERDICT ==
+H0 reinstated for the gap (neg=1/4, mean +0.0401).
+H-mech2 supported: capping hubs HELPS at 150M (diff -0.1165); hubcap vs shuffled -0.1490
+
+[09-20 10:38:33] === start p3:fly:s2 attempt 1
+[09-21 01:57:47] finished p3:fly:s2: RESULT p3_fly: val_bpb=3.9911 time=55147s steps=2343750
+[09-21 01:57:47] === start p3:shuffled:s2 attempt 1
+[09-22 03:57:16] finished p3:shuffled:s2: RESULT p3_shuffled: val_bpb=3.8707 time=93564s steps=2343750
+[09-22 03:57:16] === start p3:er:s2 attempt 1
+[09-22 16:49:41] finished p3:er:s2: RESULT p3_er: val_bpb=3.5093 time=46337s steps=2343750
+[09-22 16:49:41] === start p3:fly-uniform:s2 attempt 1
+[09-23 05:46:42] === start p3:fly-uniform:s2 attempt 1
+[09-23 13:14:41] finished p3:fly-uniform:s2: resumed p3_fly-uniform seed 2 at step 1025000 | RESULT p3_fly-uniform: val_bpb=4.0024 time=26873s steps=2343750
+[09-23 13:14:41] === start p3:fly:s3 attempt 1
+[09-24 02:16:00] finished p3:fly:s3: RESULT p3_fly: val_bpb=3.9284 time=46873s steps=2343750
+[09-24 02:16:00] === start p3:shuffled:s3 attempt 1
+[09-24 15:15:56] finished p3:shuffled:s3: RESULT p3_shuffled: val_bpb=3.8234 time=46789s steps=2343750
+[09-24 15:15:56] === start p3:er:s3 attempt 1
+[09-25 04:20:51] finished p3:er:s3: RESULT p3_er: val_bpb=3.5073 time=47089s steps=2343750
+[09-25 04:20:51] === start p3:fly-uniform:s3 attempt 1
+[09-25 17:19:11] finished p3:fly-uniform:s3: RESULT p3_fly-uniform: val_bpb=4.0022 time=46693s steps=2343750
+[09-25 17:19:11] === start p3:fly-hubcap:s0 attempt 1
+[09-26 06:19:10] finished p3:fly-hubcap:s0: RESULT p3_fly-hubcap: val_bpb=3.8001 time=46794s steps=2343750
+[09-26 06:19:10] === start p3:fly-hubcap:s1 attempt 1
+[09-26 21:20:16] finished p3:fly-hubcap:s1: RESULT p3_fly-hubcap: val_bpb=3.8761 time=54061s steps=2343750
+[09-26 21:20:16] no actionable jobs remain -> _phase3_all_done written
+[09-26 21:20:16] runner exit

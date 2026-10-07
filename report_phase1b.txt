@@ -1,0 +1,57 @@
+FLY-DISTILL PHASE 1b REPORT (knowledge distillation) - 15/09/2026 21:58:32
+==========================================================================
+Teacher: 3,356,160 params, ctx 512, val_bpb 1.3440
+PRIMARY arm: kd20g = alpha 0.25, tau 1.0 (aligned reader; comparable to Phase 1 20M baselines, seed 0)
+kd20 (alpha 0.5, tau 2.0) = QUARANTINED (reader +512B shift bug); kd40 = MISSING (OOM/paging failures)
+Student loss: (1-a)*CE(true) + a*T^2*CE(teacher_probs_T, student)
+
+== kd20g students (seed 0, 20M) vs Phase 1 hard-CE baselines (seed 0) ==
+  fly          kd20g 4.2564  vs hard 4.2621  delta -0.0057
+  shuffled     kd20g 4.2263  vs hard 4.2256  delta +0.0007
+  er           kd20g 4.0214  vs hard 4.0352  delta -0.0138
+
+== KEY COMPARISON: fly-vs-shuffled topology gap, seed 0 ==
+  hard-only (Phase 1):     fly 4.2621 - shuffled 4.2256 = +0.0365
+  kd20g:                   fly 4.2564 - shuffled 4.2263 = +0.0301
+  KD changed the gap by -0.0063 (favors fly)
+
+== quarantined kd20 arm (reader bug) - record only ==
+  fly          kd20 4.4242
+
+== 40M scale (kd40) ==
+  shuffled     40M 4.3412 vs 20M kd20g 4.2263  delta +0.1149
+
+== VERDICT ==
+kd20g leaves the topology gap roughly unchanged
+
+== recent phase1b log ==
+[09-15 06:45:48] skip kd20:shuffled: too many prior failures
+[09-15 06:45:48] skip kd20:er: too many prior failures
+[09-15 06:45:48] skip kd40:fly: too many prior failures
+[09-15 06:45:48] skip kd40:er: too many prior failures
+[09-15 06:45:48] skip kd20g:fly: too many prior failures
+[09-15 06:45:48] runner exit
+[09-15 06:49:49] skip kd20:shuffled: too many prior failures
+[09-15 06:49:49] skip kd20:er: too many prior failures
+[09-15 06:49:49] skip kd40:fly: too many prior failures
+[09-15 06:49:49] skip kd40:er: too many prior failures
+[09-15 06:49:49] skip kd20g:fly: too many prior failures
+[09-15 06:49:49] runner exit
+[09-15 06:53:50] skip kd20:shuffled: too many prior failures
+[09-15 06:53:50] skip kd20:er: too many prior failures
+[09-15 06:53:50] skip kd40:fly: too many prior failures
+[09-15 06:53:50] skip kd40:er: too many prior failures
+[09-15 06:53:50] skip kd20g:fly: too many prior failures
+[09-15 06:53:50] runner exit
+[09-15 06:57:51] skip kd20:shuffled: too many prior failures
+[09-15 06:57:51] skip kd20:er: too many prior failures
+[09-15 06:57:51] skip kd40:fly: too many prior failures
+[09-15 06:57:51] skip kd40:er: too many prior failures
+[09-15 06:57:51] skip kd20g:fly: too many prior failures
+[09-15 06:57:51] runner exit
+[09-15 07:01:52] skip kd20:shuffled: too many prior failures
+[09-15 07:01:52] skip kd20:er: too many prior failures
+[09-15 07:01:52] skip kd40:fly: too many prior failures
+[09-15 07:01:52] skip kd40:er: too many prior failures
+[09-15 07:01:52] skip kd20g:fly: too many prior failures
+[09-15 07:01:52] runner exit

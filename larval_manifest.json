@@ -1,0 +1,24 @@
+{
+  "source": "Winding et al. 2023 (Science), Supplementary Data S1, brain-networks/larval-drosophila-connectome",
+  "N_neurons": 2952,
+  "total_synapse_count": 352611,
+  "threshold": 3,
+  "edges_kept": 38401,
+  "edges_by_threshold": {
+    "1": 110677,
+    "2": 58631,
+    "3": 38401,
+    "5": 20533
+  },
+  "sensory_count": 430,
+  "output_count": 46,
+  "annotations_rows": 1373,
+  "params": {
+    "v_rest_mV": -52.0,
+    "v_thresh_mV": -45.0,
+    "tau_ms": 20.0,
+    "w_mV": 0.275,
+    "dt_ms": 1.0,
+    "T_ticks_per_byte": 16
+  }
+}

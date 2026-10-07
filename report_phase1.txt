@@ -1,0 +1,80 @@
+FLY-DISTILL PHASE 1 REPORT - 14/09/2026 21:15:52
+==========================================================================
+Setup: 2952-neuron Winding-2023 larval connectome, LIF byte-LM, adapters-only
+(emb+gains+readout trainable, graph frozen). 20M train bytes, 150k val bytes,
+batch 64, lr 3e-3, TinyStories slice. Only topology/T/width differ per arm.
+Arms: P0 multi-seed T=4 | P1 t8 (T=8) | P2 w1024 (MLP readout, +334k params)
+
+== A. MULTI-SEED @ 20M (T=4, linear readout) ==
+fly          n=4 mean=4.2728 sd=0.0081 sem=0.0040  [s0:4.2621, s1:4.2791, s2:4.2789, s3:4.2711]
+shuffled     n=3 mean=4.2442 sd=0.0291 sem=0.0168  [s0:4.2256, s1:4.2778, s2:4.2293]
+er           n=3 mean=4.0288 sd=0.0067 sem=0.0038  [s0:4.0352, s1:4.0295, s2:4.0219]
+fly-uniform  n=3 mean=4.3590 sd=0.0016 sem=0.0009  [s0:4.3582, s1:4.3608, s2:4.3580]
+
+  fly - shuffled  (topology effect): +0.0291 over seeds [0, 1, 2] (sem 0.0144, t=2.02)
+  fly - er        (vs random graph): +0.2445 over seeds [0, 1, 2] (sem 0.0090, t=27.03)
+  er - shuffled   (degree effect): -0.2154 over seeds [0, 1, 2] (sem 0.0172, t=-12.54)
+  fly-uniform - shuffled: +0.1148 over seeds [0, 1, 2] (sem 0.0159, t=7.21)
+
+== B. CAPACITY ARMS (seed 0, 20M) ==
+fly          T=8        4.0579  vs T=4-linear 4.2621  delta -0.2042
+fly          width1024  4.1841  vs T=4-linear 4.2621  delta -0.0780
+shuffled     T=8        4.0543  vs T=4-linear 4.2256  delta -0.1713
+shuffled     width1024  4.1777  vs T=4-linear 4.2256  delta -0.0479
+er           T=8        3.7376  vs T=4-linear 4.0352  delta -0.2975
+er           width1024  3.9783  vs T=4-linear 4.0352  delta -0.0569
+fly-uniform  T=8        4.1919  vs T=4-linear 4.3582  delta -0.1662
+fly-uniform  width1024  4.1770  vs T=4-linear 4.3582  delta -0.1811
+
+== C. FLY VS CONTROLS PER ARM (seed 0, 20M) ==
+  T=4 linear  fly=4.2621  fly-shuffled +0.0365  fly-er +0.2269
+  T=8         fly=4.0579  fly-shuffled +0.0036  fly-er +0.3202
+  w1024       fly=4.1841  fly-shuffled +0.0063  fly-er +0.2057
+
+== VERDICT ==
+A) fly-shuffled +0.0291, t=2.02: suggestive, not significant at n=3
+B) capacity arm T=8: (fly-shuffled) gap shrunk by -0.0329 vs T=4 baseline
+B) capacity arm w1024: (fly-shuffled) gap shrunk by -0.0302 vs T=4 baseline
+C) no capacity arm flips the sign -> H0 survives capacity scale-up (so far)
+
+== recent pipeline log ==
+[09-13 09:31:47] === start base:fly:s1 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 09:33:50] === start base:fly:s1 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 10:51:57] finished base:fly:s1: RESULT fly: val_bpb=4.2791 time=4681s steps=312500
+[09-13 10:51:57] === start base:shuffled:s1 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 11:58:30] finished base:shuffled:s1: RESULT shuffled: val_bpb=4.2778 time=3986s steps=312500
+[09-13 11:58:30] === start base:er:s1 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 13:28:04] finished base:er:s1: RESULT er: val_bpb=4.0295 time=5367s steps=312500
+[09-13 13:28:04] === start base:fly:s2 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 14:31:10] finished base:fly:s2: RESULT fly: val_bpb=4.2789 time=3777s steps=312500
+[09-13 14:31:10] === start base:shuffled:s2 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 15:33:32] finished base:shuffled:s2: RESULT shuffled: val_bpb=4.2293 time=3736s steps=312500
+[09-13 15:33:32] === start base:er:s2 attempt 1 (T=4 w=0 20,000,000B)
+[09-13 16:37:08] finished base:er:s2: RESULT er: val_bpb=4.0219 time=3810s steps=312500
+[09-13 16:37:08] === start t8:fly:s0 attempt 1 (T=8 w=0 20,000,000B)
+[09-13 18:36:03] finished t8:fly:s0: RESULT t8_fly: val_bpb=4.0579 time=7130s steps=312500
+[09-13 18:36:03] === start t8:shuffled:s0 attempt 1 (T=8 w=0 20,000,000B)
+[09-13 20:27:27] finished t8:shuffled:s0: RESULT t8_shuffled: val_bpb=4.0543 time=6678s steps=312500
+[09-13 20:27:27] === start t8:er:s0 attempt 1 (T=8 w=0 20,000,000B)
+[09-13 22:18:51] finished t8:er:s0: RESULT t8_er: val_bpb=3.7376 time=6678s steps=312500
+[09-13 22:18:51] === start w1024:fly:s0 attempt 1 (T=4 w=1024 20,000,000B)
+[09-13 23:24:32] finished w1024:fly:s0: RESULT w1024_fly: val_bpb=4.1841 time=3935s steps=312500
+[09-13 23:24:32] === start w1024:shuffled:s0 attempt 1 (T=4 w=1024 20,000,000B)
+[09-14 00:30:05] finished w1024:shuffled:s0: RESULT w1024_shuffled: val_bpb=4.1777 time=3928s steps=312500
+[09-14 00:30:05] === start w1024:er:s0 attempt 1 (T=4 w=1024 20,000,000B)
+[09-14 01:35:31] finished w1024:er:s0: RESULT w1024_er: val_bpb=3.9783 time=3920s steps=312500
+[09-14 01:35:31] === start base:fly-uniform:s0 attempt 1 (T=4 w=0 20,000,000B)
+[09-14 02:38:21] finished base:fly-uniform:s0: RESULT fly-uniform: val_bpb=4.3582 time=3765s steps=312500
+[09-14 02:38:21] === start base:fly-uniform:s1 attempt 1 (T=4 w=0 20,000,000B)
+[09-14 03:41:15] finished base:fly-uniform:s1: RESULT fly-uniform: val_bpb=4.3608 time=3769s steps=312500
+[09-14 03:41:15] === start base:fly-uniform:s2 attempt 1 (T=4 w=0 20,000,000B)
+[09-14 04:43:17] finished base:fly-uniform:s2: RESULT fly-uniform: val_bpb=4.3580 time=3717s steps=312500
+[09-14 04:43:17] === start t8:fly-uniform:s0 attempt 1 (T=8 w=0 20,000,000B)
+[09-14 06:33:38] finished t8:fly-uniform:s0: RESULT t8_fly-uniform: val_bpb=4.1919 time=6615s steps=312500
+[09-14 06:33:38] === start w1024:fly-uniform:s0 attempt 1 (T=4 w=1024 20,000,000B)
+[09-14 07:39:09] finished w1024:fly-uniform:s0: RESULT w1024_fly-uniform: val_bpb=4.1770 time=3926s steps=312500
+[09-14 07:39:09] === start base:fly:s3 attempt 1 (T=4 w=0 20,000,000B)
+[09-14 08:42:29] finished base:fly:s3: RESULT fly: val_bpb=4.2711 time=3794s steps=312500
+[09-14 08:42:29] deadline guard (23.18h elapsed) -> not starting base:shuffled:s3
+[09-14 08:42:29] P0-P3 complete -> _phase1_all_done written
+[09-14 08:42:29] runner exit
